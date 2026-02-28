@@ -1,83 +1,76 @@
-# UPI Transaction Data Analysis — Power BI Project
+# Power BI UPI Transaction Analysis Dashboard 💳🇮🇳
+
+**Author**: Megha Kallapur  
+**Location**: Karnataka, India  
+**[GitHub](https://github.com/Megha-B-K)**
+
+---
 
 ## Project Overview
-This repository contains a **Power BI dashboard** that analyzes **UPI (Unified Payments Interface)** transaction data.  
-The report reveals patterns in transaction volume, value, growth over time, and insights by category and geography — helping stakeholders understand digital payment trends.
+
+Interactive **Power BI dashboard** analyzing **UPI remittances & transactions** across **Bank, City, Gender, Month, Year**. Perfect for fintech analysis, fraud detection, and digital payment trends.
+
+**Dataset**: UPI transaction records with Balance Amount, Transaction Amount by demographics and time periods.
+
+**Business Value**: Track remittance patterns, identify high-volume months/banks/cities, analyze gender-based trends.
 
 ---
 
-## Objectives
-- Analyze **UPI transaction trends** (monthly, yearly)
-- Identify peak transaction periods
-- Observe **value vs volume** distribution
-- Compare transaction performance by category
-- Provide visual insights for business and financial decisions
+## ashboard Features
+
+| Visual Type         | Key Metrics                | Insights                        |
+|---------------------|----------------------------|---------------------------------|
+| **Matrix Table**    | Balance/Transaction Amount | By Bank, City, Gender, Month    |
+| **Column Chart**    | Remittance Balance         | Monthly trends (Jan-Dec by Year)|
+| **Filters/Slicers** | Bank, City, Gender, Date   | Dynamic interactivity           | 
+| **Totals**          | Overall UPI Volume         | Cross-tab analysis              |
 
 ---
 
-## Files Included
-- **UPI Transactions Analysis.pbix** – Power BI Desktop report
-- **Updated UPI Data.csv** – Dataset containing transaction records
-- **Datasets/** – Full set of supporting data files (if any)
+## Technical Implementation
 
----
+### Data Model
+Fact Tables:
+├── Balance Amount (by Bank/City/Gender/Month)
+└── Transaction Amount
 
-## How to Use
-1. Download the `.pbix` file  
-2. Open in **Power BI Desktop**  
-3. Interact with visuals and filters  
-4. Refresh data if you update the dataset
+Dimensions: Bank, City, Gender, Date (Month/Year)
 
----
+Relationships: Many-to-One on Bank, City, Gender, Month
 
-## Data Description
-The dataset includes features such as:
-- **Transaction Date**
-- **UPI Transaction Amount**
-- **Transaction Count**
-- **Category (Goods/Services)**
-- **Geography (State/City, if available)**
-- **Payment Modes**
-- 
----
+### Key DAX Measures
+```dax
+-- Total Remittance Balance
+Total Remittance = SUM('UPI Data'[Balance Amount])
 
-## Key Analysis Sections
-### Time Trend Analysis
-- Monthly transaction volume trends  
-- Year-over-year growth rates  
+-- Avg Transaction per Bank
+Avg Tx per Bank = 
+AVERAGEX(
+    VALUES('UPI Data'[Bank]),
+    CALCULATE(SUM('UPI Data'[Transaction Amount]))
+)
 
-### Value vs Volume
-- Correlation of transaction count with total amount  
-- Average transaction value by time period  
+-- YoY Growth
+YoY Remittance Growth = 
+DIVIDE(
+    [Total Remittance] - CALCULATE([Total Remittance], SAMEPERIODLASTYEAR('Date'[Date])),
+    CALCULATE([Total Remittance], SAMEPERIODLASTYEAR('Date'[Date]))
+)
 
-### Category & Geography Views
-- Payments by category (e.g., P2P, Merchant)  
-- State / city analysis (if available)  
+-- Gender-wise %
+Remittance % by Gender = 
+DIVIDE([Total Remittance], CALCULATE([Total Remittance], ALL('UPI Data'[Gender])), 0)
 
-### Visual Interactivity
-- Filters for time (Month/Year)
-- Transaction range slicers
-- Category selection filters
+### Actionable Insights
+Monthly Peaks: Highest remittances in peak months (visible in column charts)
 
----
+Bank Leaders: Top banks by balance/transaction volume
 
-## Visuals Used
-- Line Charts  
-- Column / Bar Charts  
-- KPI Cards  
-- Slicers & Filters  
-- Map Visual (if location data present)
+City Hotspots: Urban vs rural remittance patterns
 
----
+Gender Trends: Transaction behavior differences
 
-## Tools Used
-- **Power BI Desktop**  
-- **Power Query** for data cleaning  
-- **DAX** for calculated measures
+Yearly Growth: UPI adoption acceleration [web:26][web:34]
 
----
-
-## About Me
-**Megha B K**  
-GitHub: https://github.com/Megha-B-K  
-Data Analysis | Power BI 
+Gmail: meghakallapur@gmail.com
+Last Updated: February 2026 [cite:11]
